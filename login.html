@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - MANI MART</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>MANI MART</h1>
+    </header>
+
+    <main>
+        <h2>Login</h2>
+
+        <form onsubmit="loginUser(event)">
+
+            <input type="email" id="email" placeholder="Enter Email" required>
+            <br><br>
+
+            <input type="password" id="password" placeholder="Enter Password" required>
+            <br><br>
+
+            <select id="role" required>
+                <option value="">Select Role</option>
+                <option value="buyer">Buyer</option>
+                <option value="seller">Seller</option>
+                <option value="admin">Admin</option>
+            </select>
+            <br><br>
+
+            <button type="submit">Login</button>
+
+        </form>
+
+        <p>New user? <a href="register.html">Register here</a></p>
+    </main>
+
+    <script>
+        function loginUser(event) {
+            event.preventDefault();
+
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+            let role = document.getElementById("role").value;
+
+            if (
+                role === "admin" &&
+                email === "admin@manimart.com" &&
+                password === "admin123"
+            ) {
+                alert("Admin login successful!");
+                window.location.href = "admin.html";
+                return;
+            }
+
+            let users = JSON.parse(localStorage.getItem("users")) || [];
+
+            let user = users.find(function(user) {
+                return user.email === email &&
+                       user.password === password &&
+                       user.role === role;
+            });
+
+            if (!user) {
+                alert("Invalid email, password or role!");
+                return;
+            }
+
+            alert("Login successful!");
+
+            if (role === "buyer") {
+                window.location.href = "buyer.html";
+            } else if (role === "seller") {
+                window.location.href = "seller.html";
+            }
+        }
+    </script>
+
+</body>
+</html>

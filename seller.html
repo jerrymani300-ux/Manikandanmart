@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Dashboard - MANI MART</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>MANI MART</h1>
+    <button onclick="goToBuyer()">Buyer View</button>
+</header>
+
+<main>
+    <h2>Seller Dashboard</h2>
+    <p>Add and manage your products.</p>
+
+    <section class="product-form">
+        <h3>Add Product</h3>
+
+        <input type="text" id="productName"
+               placeholder="Product Name">
+
+        <input type="number" id="productPrice"
+               placeholder="Price">
+
+        <select id="productCategory">
+            <option value="electronics">Electronics</option>
+            <option value="accessories">Accessories</option>
+        </select>
+
+        <button onclick="addProduct()">Add Product</button>
+    </section>
+
+    <h3>My Products</h3>
+
+    <section class="products" id="sellerProductList">
+    </section>
+</main>
+
+<script>
+
+let products = JSON.parse(localStorage.getItem("products")) || [
+
+    {
+        name: "Laptop",
+        price: 45000,
+        category: "electronics"
+    },
+
+    {
+        name: "Mobile",
+        price: 18000,
+        category: "electronics"
+    },
+
+    {
+        name: "Headphones",
+        price: 2000,
+        category: "accessories"
+    }
+
+];
+
+function saveProducts() {
+    localStorage.setItem("products", JSON.stringify(products));
+}
+
+function displayProducts() {
+
+    let productList =
+        document.getElementById("sellerProductList");
+
+    productList.innerHTML = "";
+
+    products.forEach(function(product, index) {
+
+        let div = document.createElement("div");
+
+        div.className = "product";
+
+        div.innerHTML = `
+            <h3>${product.name}</h3>
+            <p>₹${product.price}</p>
+            <p>Category: ${product.category}</p>
+
+            <button onclick="editProduct(${index})">
+                Edit
+            </button>
+
+            <button onclick="deleteProduct(${index})">
+                Delete
+            </button>
+        `;
+
+        productList.appendChild(div);
+
+    });
+
+}
+
+function addProduct() {
+
+    let name =
+        document.getElementById("productName").value;
+
+    let price =
+        document.getElementById("productPrice").value;
+
+    let category =
+        document.getElementById("productCategory").value;
+
+    if (name === "" || price === "") {
+
+        alert("Please fill all details!");
+        return;
+
+    }
+
+    let newProduct = {
+
+        name: name,
+        price: Number(price),
+        category: category
+
+    };
+
+    products.push(newProduct);
+
+    saveProducts();
+
+    displayProducts();
+
+    document.getElementById("productName").value = "";
+    document.getElementById("productPrice").value = "";
+
+    alert("Product added successfully!");
+
+}
+
+function editProduct(index) {
+
+    let newName = prompt(
+        "Enter new product name:",
+        products[index].name
+    );
+
+    let newPrice = prompt(
+        "Enter new price:",
+        products[index].price
+    );
+
+    if (newName !== null && newPrice !== null) {
+
+        products[index].name = newName;
+        products[index].price = Number(newPrice);
+
+        saveProducts();
+
+        displayProducts();
+
+        alert("Product updated successfully!");
+
+    }
+
+}
+
+function deleteProduct(index) {
+
+    if (confirm("Delete this product?")) {
+
+        products.splice(index, 1);
+
+        saveProducts();
+
+        displayProducts();
+
+        alert("Product deleted successfully!");
+
+    }
+
+}
+
+function goToBuyer() {
+
+    window.location.href = "buyer.html";
+
+}
+
+displayProducts();
+
+</script>
+
+</body>
+</html>

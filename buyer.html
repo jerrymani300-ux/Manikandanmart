@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyer Dashboard - MANI MART</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>MANI MART</h1>
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search products..."
+            onkeyup="searchProducts()"
+        >
+
+        <button onclick="goToCart()">Cart 🛒</button>
+    </header>
+
+    <main>
+        <h2>Buyer Dashboard</h2>
+        <p>Welcome! Browse and shop your favourite products.</p>
+
+        <select id="categoryFilter" onchange="filterProducts()">
+            <option value="all">All Categories</option>
+            <option value="electronics">Electronics</option>
+            <option value="accessories">Accessories</option>
+        </select>
+
+        <section class="products" id="productList"></section>
+    </main>
+
+    <script>
+        let products = JSON.parse(localStorage.getItem("products")) || [];
+
+        function displayProducts() {
+            const list = document.getElementById("productList");
+
+            list.innerHTML = "";
+
+            products.forEach(function(product) {
+                const div = document.createElement("div");
+
+                div.className = "product";
+                div.dataset.name = product.name.toLowerCase();
+                div.dataset.category = product.category;
+
+                div.innerHTML = `
+                    <h3>${product.name}</h3>
+                    <p>₹${product.price}</p>
+                    <p>Category: ${product.category}</p>
+                    <button class="add-btn">Add to Cart</button>
+                `;
+
+                div.querySelector(".add-btn").addEventListener("click", function() {
+                    addToCart(product.name, product.price);
+                });
+
+                list.appendChild(div);
+            });
+        }
+
+        function applyFilters() {
+            let searchText = document
+                .getElementById("searchInput")
+                .value
+                .toLowerCase();
+
+            let selectedCategory = document
+                .getElementById("categoryFilter")
+                .value;
+
+            document.querySelectorAll(".product").forEach(function(product) {
+                let nameMatch = product.dataset.name.includes(searchText);
+
+                let categoryMatch =
+                    selectedCategory === "all" ||
+                    product.dataset.category === selectedCategory;
+
+                if (nameMatch && categoryMatch) {
+                    product.style.display = "block";
+                } else {
+                    product.style.display = "none";
+                }
+            });
+        }
+
+        function searchProducts() {
+            applyFilters();
+        }
+
+        function filterProducts() {
+            applyFilters();
+        }
+
+        function addToCart(name, price) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+            let existingProduct = cart.find(function(item) {
+                return item.name === name;
+            });
+
+            if (existingProduct) {
+                existingProduct.quantity++;
+            } else {
+                cart.push({
+                    name: name,
+                    price: price,
+                    quantity: 1
+                });
+            }
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+
+            alert(name + " added to cart!");
+        }
+
+        function goToCart() {
+            window.location.href = "cart.html";
+        }
+
+        displayProducts();
+    </script>
+
+</body>
+</html>

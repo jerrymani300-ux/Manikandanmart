@@ -1,0 +1,1 @@
+console.log("MANI MART website started!");

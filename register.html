@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - MANI MART</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>MANI MART</h1>
+    </header>
+
+    <main>
+        <h2>Create Account</h2>
+
+        <form onsubmit="registerUser(event)">
+
+            <input type="text" id="name" placeholder="Enter Name" required>
+            <br><br>
+
+            <input type="email" id="email" placeholder="Enter Email" required>
+            <br><br>
+
+            <input type="password" id="password" placeholder="Create Password" required>
+            <br><br>
+
+            <select id="role" required>
+                <option value="">Select Role</option>
+                <option value="buyer">Buyer</option>
+                <option value="seller">Seller</option>
+            </select>
+            <br><br>
+
+            <button type="submit">Register</button>
+
+        </form>
+
+        <p>Already have an account?
+            <a href="login.html">Login here</a>
+        </p>
+    </main>
+
+    <script>
+        function registerUser(event) {
+            event.preventDefault();
+
+            let name = document.getElementById("name").value;
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+            let role = document.getElementById("role").value;
+
+            let users = JSON.parse(localStorage.getItem("users")) || [];
+
+            let existingUser = users.find(function(user) {
+                return user.email === email;
+            });
+
+            if (existingUser) {
+                alert("Email already registered!");
+                return;
+            }
+
+            let newUser = {
+                name: name,
+                email: email,
+                password: password,
+                role: role
+            };
+
+            users.push(newUser);
+
+            localStorage.setItem("users", JSON.stringify(users));
+
+            alert("Registration successful!");
+
+            window.location.href = "login.html";
+        }
+    </script>
+
+</body>
+</html>

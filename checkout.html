@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - MANI MART</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>MANI MART</h1>
+        <button onclick="goToCart()">Back to Cart</button>
+    </header>
+
+    <main>
+        <h2>Checkout</h2>
+
+        <section class="checkout-box">
+
+            <h3>Delivery Details</h3>
+
+            <input type="text" id="name" placeholder="Enter Name">
+            <br><br>
+
+            <input type="text" id="phone" placeholder="Enter Phone Number">
+            <br><br>
+
+            <textarea id="address" placeholder="Enter Delivery Address"></textarea>
+            <br><br>
+
+            <h3>Order Summary</h3>
+
+            <div id="orderSummary"></div>
+
+            <h3 id="totalPrice">Total: ₹0</h3>
+
+            <button onclick="placeOrder()">Place Order</button>
+
+        </section>
+    </main>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        function displayOrder() {
+            let summary = document.getElementById("orderSummary");
+            summary.innerHTML = "";
+
+            if (cart.length === 0) {
+                summary.innerHTML = "<p>Your cart is empty!</p>";
+                document.getElementById("totalPrice").innerText =
+                    "Total: ₹0";
+                return;
+            }
+
+            let total = 0;
+
+            cart.forEach(function(item) {
+                total += item.price * item.quantity;
+
+                summary.innerHTML += `
+                    <p>
+                        ${item.name} × ${item.quantity}
+                        = ₹${item.price * item.quantity}
+                    </p>
+                `;
+            });
+
+            document.getElementById("totalPrice").innerText =
+                "Total: ₹" + total;
+        }
+
+        function placeOrder() {
+    let name = document.getElementById("name").value;
+    let phone = document.getElementById("phone").value;
+    let address = document.getElementById("address").value;
+
+    if (name === "" || phone === "" || address === "") {
+        alert("Please fill all delivery details!");
+        return;
+    }
+
+    if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+
+    let total = 0;
+
+    cart.forEach(function(item) {
+        total += item.price * item.quantity;
+    });
+
+    // Create new order
+    let newOrder = {
+        name: name,
+        phone: phone,
+        address: address,
+        items: cart,
+        total: total,
+        date: new Date().toLocaleString()
+    };
+
+    // Get old orders
+    let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+    // Add new order
+    orders.push(newOrder);
+
+    // Save orders
+    localStorage.setItem("orders", JSON.stringify(orders));
+
+    // Clear cart
+    localStorage.removeItem("cart");
+
+    alert("Order placed successfully! 🎉");
+
+    window.location.href = "buyer.html";
+}
+
+        function goToCart() {
+            window.location.href = "cart.html";
+        }
+
+        displayOrder();
+    </script>
+
+</body>
+</html>

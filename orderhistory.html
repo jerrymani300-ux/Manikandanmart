@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History - MANI MART</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>MANI MART</h1>
+        <button onclick="goToBuyer()">Back to Buyer</button>
+    </header>
+
+    <main>
+        <h2>Order History</h2>
+
+        <div id="orders"></div>
+    </main>
+
+    <script>
+        let orders = JSON.parse(localStorage.getItem("orders")) || [];
+        let reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+
+        function displayOrders() {
+            let container = document.getElementById("orders");
+            container.innerHTML = "";
+
+            if (orders.length === 0) {
+                container.innerHTML = "<p>No orders found!</p>";
+                return;
+            }
+
+            orders.forEach(function(order, index) {
+
+                let itemsHTML = "";
+
+                order.items.forEach(function(item) {
+
+                    let productReview = reviews.find(function(review) {
+                        return review.product === item.name;
+                    });
+
+                    let reviewHTML = "";
+
+                    if (productReview) {
+                        reviewHTML = `
+                            <p><b>Your Rating:</b> ${"⭐".repeat(productReview.rating)}</p>
+                            <p><b>Your Review:</b> ${productReview.comment}</p>
+                        `;
+                    } else {
+                        reviewHTML = `
+                            <h4>Rate this Product</h4>
+
+                            <select id="rating-${index}-${item.name}">
+                                <option value="">Select Rating</option>
+                                <option value="1">⭐ 1</option>
+                                <option value="2">⭐ 2</option>
+                                <option value="3">⭐ 3</option>
+                                <option value="4">⭐ 4</option>
+                                <option value="5">⭐ 5</option>
+                            </select>
+
+                            <br><br>
+
+                            <textarea
+                                id="review-${index}-${item.name}"
+                                placeholder="Write your review..."
+                                rows="3"
+                            ></textarea>
+
+                            <br><br>
+
+                            <button onclick="submitReview(${index}, '${item.name}')">
+                                Submit Review
+                            </button>
+                        `;
+                    }
+
+                    itemsHTML += `
+                        <div class="checkout-box">
+                            <p>
+                                <b>${item.name}</b> × ${item.quantity}
+                                = ₹${item.price * item.quantity}
+                            </p>
+
+                            ${reviewHTML}
+                        </div>
+                    `;
+                });
+
+                container.innerHTML += `
+                    <div class="checkout-box">
+
+                        <h3>Order ${index + 1}</h3>
+
+                        <p><b>Date:</b> ${order.date}</p>
+
+                        <h4>Products</h4>
+
+                        ${itemsHTML}
+
+                        <p><b>Total:</b> ₹${order.total}</p>
+
+                        <p><b>Delivery Name:</b> ${order.name}</p>
+                        <p><b>Phone:</b> ${order.phone}</p>
+                        <p><b>Address:</b> ${order.address}</p>
+
+                        <p><b>Status:</b> Order Placed</p>
+
+                    </div>
+                `;
+            });
+        }
+
+        function submitReview(orderIndex, productName) {
+
+            let rating = document.getElementById(
+                "rating-" + orderIndex + "-" + productName
+            ).value;
+
+            let comment = document.getElementById(
+                "review-" + orderIndex + "-" + productName
+            ).value;
+
+            if (rating === "") {
+                alert("Please select a rating!");
+                return;
+            }
+
+            if (comment.trim() === "") {
+                alert("Please write a review!");
+                return;
+            }
+
+            let newReview = {
+                product: productName,
+                rating: Number(rating),
+                comment: comment
+            };
+
+            reviews.push(newReview);
+
+            localStorage.setItem("reviews", JSON.stringify(reviews));
+
+            alert("Review submitted successfully!");
+
+            displayOrders();
+        }
+
+        function goToBuyer() {
+            window.location.href = "buyer.html";
+        }
+
+        displayOrders();
+    </script>
+
+</body>
+</html>
