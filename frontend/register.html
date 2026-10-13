@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create an Account - ManiMart</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="header">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">M</div>
+        <span>ManiMart</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="products.html" class="nav-link">Explore</a></li>
+        <li id="nav-auth-controls">
+          <a href="login.html" class="nav-link">Sign In</a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Register Form -->
+  <main class="main-content">
+    <div class="auth-container">
+      <h1 class="auth-title">Create Account</h1>
+      <p class="auth-subtitle">Join ManiMart as a Shopper or Independent Seller</p>
+
+      <form id="register-form">
+        <div class="form-group">
+          <label class="form-label" for="reg-name">Full Name / Store Name</label>
+          <input type="text" id="reg-name" class="form-control" placeholder="Jane Doe" required minlength="2">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-email">Email Address</label>
+          <input type="email" id="reg-email" class="form-control" placeholder="jane@example.com" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-role">Account Type</label>
+          <select id="reg-role" class="form-control" required>
+            <option value="BUYER">Buyer (Shop and review products)</option>
+            <option value="SELLER">Seller (List and manage your products)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-password">Password</label>
+          <input type="password" id="reg-password" class="form-control" placeholder="At least 8 chars (1 upper, 1 lower, 1 digit, 1 symbol)" required minlength="8">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-confirm-password">Confirm Password</label>
+          <input type="password" id="reg-confirm-password" class="form-control" placeholder="••••••••" required minlength="8">
+        </div>
+
+        <button type="submit" id="btn-reg-submit" class="nav-btn btn-primary" style="width: 100%; justify-content: center; padding: 0.75rem; margin-top: 0.5rem;">
+          Complete Registration
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
+        Already have an account? <a id="link-to-login" href="login.html" style="font-weight: 600;">Sign In</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const redirect = params.get('redirect');
+    if (redirect) {
+      const loginLink = document.getElementById('link-to-login');
+      if (loginLink) loginLink.href = `login.html?redirect=${encodeURIComponent(redirect)}`;
+    }
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('reg-name').value;
+      const email = document.getElementById('reg-email').value;
+      const role = document.getElementById('reg-role').value;
+      const pass = document.getElementById('reg-password').value;
+      const confirmPass = document.getElementById('reg-confirm-password').value;
+
+      if (pass !== confirmPass) {
+        Toast.error('Passwords do not match');
+        return;
+      }
+
+      const btn = document.getElementById('btn-reg-submit');
+      btn.disabled = true;
+      btn.textContent = 'Creating Account...';
+
+      try {
+        await Auth.register(name, email, pass, role);
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'Complete Registration';
+        Toast.error(err.message || 'Registration failed');
+      }
+    });
+  </script>
+</body>
+</html>

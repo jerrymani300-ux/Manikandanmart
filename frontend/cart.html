@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart - ManiMart</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="header">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">M</div>
+        <span>ManiMart</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="products.html" class="nav-link">Explore</a></li>
+        <li>
+          <a href="cart.html" class="nav-link" style="color: var(--primary); font-weight: 600;">
+            🛒 Cart <span id="cart-badge" class="cart-badge" style="display: none;">0</span>
+          </a>
+        </li>
+        <li id="nav-auth-controls"></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <h1 class="section-title" style="margin-bottom: 1.5rem;">Shopping Cart</h1>
+
+    <div class="cart-layout">
+      <!-- Cart Items List -->
+      <div class="card" id="cart-items-container">
+        <div id="cart-items-list">
+          <!-- Populated by cart.js -->
+        </div>
+      </div>
+
+      <!-- Order Summary Card -->
+      <div id="cart-summary" class="card" style="align-self: flex-start;">
+        <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1.25rem;">Order Summary</h2>
+
+        <div class="summary-row">
+          <span style="color: var(--text-muted);">Subtotal</span>
+          <span id="summary-subtotal" style="font-weight: 600;">$0.00</span>
+        </div>
+
+        <div class="summary-row">
+          <span style="color: var(--text-muted);">Estimated Shipping</span>
+          <span style="color: var(--success); font-weight: 600;">FREE</span>
+        </div>
+
+        <div class="summary-row summary-total">
+          <span>Estimated Total</span>
+          <span id="summary-total" style="color: var(--primary);">$0.00</span>
+        </div>
+
+        <a href="checkout.html" id="btn-proceed-checkout" class="nav-btn btn-primary" style="width: 100%; justify-content: center; padding: 0.85rem; margin-top: 1.5rem; font-size: 1rem;">
+          Proceed to Checkout &rarr;
+        </a>
+
+        <div style="text-align: center; margin-top: 1rem;">
+          <a href="products.html" style="font-size: 0.85rem; color: var(--text-muted);">or Continue Shopping</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-bottom">&copy; 2026 ManiMart Marketplace.</div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Cart.loadCartPage();
+    });
+  </script>
+</body>
+</html>

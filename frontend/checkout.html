@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - ManiMart</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="header">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">M</div>
+        <span>ManiMart</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="cart.html" class="nav-link">&larr; Return to Cart</a></li>
+        <li id="nav-auth-controls"></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Checkout Content -->
+  <main class="main-content">
+    <h1 class="section-title" style="margin-bottom: 1.5rem;">Secure Checkout</h1>
+
+    <div class="cart-layout">
+      <!-- Checkout Form -->
+      <div class="card">
+        <form id="checkout-form" onsubmit="Checkout.placeOrder(event)">
+          <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1.25rem;">1. Shipping Address</h2>
+          <div class="form-group">
+            <label class="form-label" for="shipping-address">Full Delivery Address</label>
+            <textarea id="shipping-address" class="form-control" rows="3" placeholder="Apartment / Suite, Street Address, City, State, ZIP Code" required></textarea>
+          </div>
+
+          <h2 style="font-size: 1.25rem; font-weight: 700; margin: 2rem 0 1.25rem;">2. Payment Method (Mock Payment Gateway)</h2>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem;">
+            <label style="display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem; border: 1px solid var(--border); border-radius: var(--radius-md); cursor: pointer;">
+              <input type="radio" name="payment_method" value="MOCK_CARD" checked>
+              <div>
+                <strong>Credit / Debit Card (Mock)</strong>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">Instant simulated verification</div>
+              </div>
+            </label>
+
+            <label style="display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem; border: 1px solid var(--border); border-radius: var(--radius-md); cursor: pointer;">
+              <input type="radio" name="payment_method" value="MOCK_UPI">
+              <div>
+                <strong>UPI / Net Banking (Mock)</strong>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">Simulated instant bank clearance</div>
+              </div>
+            </label>
+
+            <label style="display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem; border: 1px solid var(--border); border-radius: var(--radius-md); cursor: pointer;">
+              <input type="radio" name="payment_method" value="MOCK_COD">
+              <div>
+                <strong>Cash on Delivery (COD)</strong>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">Pay upon physical receipt of package</div>
+              </div>
+            </label>
+          </div>
+
+          <button type="submit" id="btn-confirm-order" class="nav-btn btn-primary" style="width: 100%; justify-content: center; padding: 0.95rem; font-size: 1.05rem;">
+            Confirm Order & Pay
+          </button>
+        </form>
+      </div>
+
+      <!-- Order Review Sidebar -->
+      <div class="card" style="align-self: flex-start;">
+        <h2 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem;">Items in Order</h2>
+        <div id="checkout-items-list" style="margin-bottom: 1.5rem;">
+          <!-- Loaded via checkout.js -->
+        </div>
+
+        <div class="summary-row">
+          <span style="color: var(--text-muted);">Subtotal</span>
+          <span id="checkout-subtotal" style="font-weight: 600;">$0.00</span>
+        </div>
+
+        <div class="summary-row">
+          <span style="color: var(--text-muted);">Shipping</span>
+          <span style="color: var(--success); font-weight: 600;">FREE</span>
+        </div>
+
+        <div class="summary-row summary-total">
+          <span>Order Total</span>
+          <span id="checkout-total" style="color: var(--primary);">$0.00</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-bottom">&copy; 2026 ManiMart Marketplace.</div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/checkout.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Checkout.init();
+    });
+  </script>
+</body>
+</html>

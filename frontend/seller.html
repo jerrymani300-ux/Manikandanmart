@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seller Portal - ManiMart</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="header">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">M</div>
+        <span>ManiMart <span style="font-size: 0.85rem; font-weight: 500; color: var(--text-muted); margin-left: 0.5rem;">Seller Portal</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Marketplace</a></li>
+        <li id="nav-auth-controls"></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="section-header">
+      <div>
+        <h1 class="section-title">Seller Dashboard</h1>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">Manage your storefront inventory, track sales metrics, and view customer orders.</p>
+      </div>
+      <div>
+        <button onclick="Seller.openAddModal()" class="nav-btn btn-primary" style="padding: 0.65rem 1.25rem;">
+          + Add New Product
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-label">Active Listings</span>
+        <span id="seller-total-products" class="stat-value">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Total Orders</span>
+        <span id="seller-total-orders" class="stat-value">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Gross Revenue</span>
+        <span id="seller-total-revenue" class="stat-value">$0.00</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Pending Shipments</span>
+        <span id="seller-pending-orders" class="stat-value">0</span>
+      </div>
+    </div>
+
+    <!-- Products Table -->
+    <div class="card">
+      <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1.25rem;">Your Product Listings</h2>
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Rating</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="seller-products-table">
+            <!-- Populated via seller.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Add / Edit Product Modal -->
+  <div id="product-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <h2 id="modal-title" style="font-size: 1.35rem; font-weight: 700;">Add Product</h2>
+        <button onclick="Seller.closeModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+      </div>
+
+      <form id="product-form" onsubmit="Seller.handleProductSubmit(event)">
+        <div class="form-group">
+          <label class="form-label" for="prod-name">Product Title</label>
+          <input type="text" id="prod-name" class="form-control" placeholder="e.g. Wireless Ergonomic Mouse" required minlength="2">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label" for="prod-category">Category</label>
+            <select id="prod-category" class="form-control" required>
+              <option value="Electronics">Electronics</option>
+              <option value="Fashion">Fashion</option>
+              <option value="Books">Books</option>
+              <option value="Home">Home & Living</option>
+              <option value="Fitness">Fitness</option>
+              <option value="Accessories">Accessories</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="prod-price">Price (USD)</label>
+            <input type="number" id="prod-price" class="form-control" step="0.01" min="0.01" placeholder="29.99" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label" for="prod-stock">Available Stock</label>
+            <input type="number" id="prod-stock" class="form-control" min="0" placeholder="50" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="prod-image">Image URL</label>
+            <input type="url" id="prod-image" class="form-control" placeholder="https://images.unsplash.com/..." required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="prod-desc">Detailed Description</label>
+          <textarea id="prod-desc" class="form-control" rows="4" placeholder="Describe materials, technical specs, and key features..." required minlength="5"></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;">
+          <button type="button" onclick="Seller.closeModal()" class="nav-btn btn-outline">Cancel</button>
+          <button type="submit" class="nav-btn btn-primary">Save Listing</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-bottom">&copy; 2026 ManiMart Marketplace.</div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/seller.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Seller.init();
+    });
+  </script>
+</body>
+</html>

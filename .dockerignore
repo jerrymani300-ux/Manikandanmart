@@ -1,0 +1,10 @@
+build/
+build_test/
+*.db-shm
+*.db-wal
+smart_student_helpdesk/
+.git/
+.github/
+.vscode/
+.idea/
+*.log

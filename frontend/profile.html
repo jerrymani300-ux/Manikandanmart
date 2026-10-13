@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile - ManiMart</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="header">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">M</div>
+        <span>ManiMart</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="products.html" class="nav-link">Explore</a></li>
+        <li>
+          <a href="cart.html" class="nav-link">
+            🛒 Cart <span id="cart-badge" class="cart-badge" style="display: none;">0</span>
+          </a>
+        </li>
+        <li id="nav-auth-controls"></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="auth-container" style="max-width: 500px;">
+      <div style="text-align: center; margin-bottom: 1.5rem;">
+        <div style="width: 70px; height: 70px; border-radius: 50%; background: var(--primary-light); color: var(--primary); font-size: 2rem; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 0.75rem;">
+          👤
+        </div>
+        <h1 id="prof-name" class="auth-title">User Profile</h1>
+        <span id="prof-role-badge" class="badge badge-buyer">BUYER</span>
+      </div>
+
+      <div class="card" style="margin-bottom: 1.5rem;">
+        <div class="summary-row">
+          <span style="color: var(--text-muted);">User ID</span>
+          <span id="prof-id" style="font-weight: 600;">-</span>
+        </div>
+        <div class="summary-row">
+          <span style="color: var(--text-muted);">Email Address</span>
+          <span id="prof-email" style="font-weight: 600;">-</span>
+        </div>
+        <div class="summary-row">
+          <span style="color: var(--text-muted);">Member Since</span>
+          <span id="prof-created" style="font-weight: 600;">-</span>
+        </div>
+      </div>
+
+      <div id="prof-role-actions" style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <!-- Populated based on role -->
+      </div>
+
+      <button onclick="Auth.logout()" class="nav-btn btn-outline" style="width: 100%; justify-content: center; margin-top: 1.5rem; color: var(--danger); border-color: #fca5a5;">
+        Sign Out
+      </button>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-bottom">&copy; 2026 ManiMart Marketplace.</div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = await Auth.init();
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      document.getElementById('prof-name').textContent = user.name;
+      document.getElementById('prof-id').textContent = `#${user.id}`;
+      document.getElementById('prof-email').textContent = user.email;
+      document.getElementById('prof-created').textContent = user.created_at || 'Active';
+
+      const roleBadge = document.getElementById('prof-role-badge');
+      roleBadge.textContent = user.role;
+      roleBadge.className = `badge badge-${user.role.toLowerCase()}`;
+
+      const actionsDiv = document.getElementById('prof-role-actions');
+      if (user.role === 'ADMIN') {
+        actionsDiv.innerHTML = `<a href="admin.html" class="nav-btn btn-primary" style="justify-content: center;">Open Admin Center</a>`;
+      } else if (user.role === 'SELLER') {
+        actionsDiv.innerHTML = `<a href="seller.html" class="nav-btn btn-primary" style="justify-content: center;">Open Seller Portal</a>`;
+      } else {
+        actionsDiv.innerHTML = `<a href="orders.html" class="nav-btn btn-primary" style="justify-content: center;">View My Orders</a>`;
+      }
+    });
+  </script>
+</body>
+</html>

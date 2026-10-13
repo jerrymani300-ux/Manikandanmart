@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - ManiMart</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="header">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">M</div>
+        <span>ManiMart</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="products.html" class="nav-link">Explore</a></li>
+        <li id="nav-auth-controls">
+          <a href="register.html" class="nav-btn btn-primary">Sign Up</a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Login Form -->
+  <main class="main-content">
+    <div class="auth-container">
+      <h1 class="auth-title">Welcome Back</h1>
+      <p class="auth-subtitle">Sign in to your ManiMart account to continue</p>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label class="form-label" for="login-email">Email Address</label>
+          <input type="email" id="login-email" class="form-control" placeholder="name@domain.com" required autofocus>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="login-password">Password</label>
+          <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit" id="btn-login-submit" class="nav-btn btn-primary" style="width: 100%; justify-content: center; padding: 0.75rem; margin-top: 0.5rem;">
+          Sign In
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
+        Don't have an account? <a id="link-to-register" href="register.html" style="font-weight: 600;">Register as Buyer or Seller</a>
+      </div>
+
+      <!-- Quick Demo Credentials Selector -->
+      <div class="demo-credentials-box">
+        <strong style="color: var(--secondary);">Quick Demo Logins (Capstone Demo):</strong>
+        <div class="demo-btn-group">
+          <button type="button" class="demo-btn" onclick="fillDemo('admin@manimart.com', 'AdminPass@123')">Admin</button>
+          <button type="button" class="demo-btn" onclick="fillDemo('seller1@techhub.com', 'SellerPass@123')">Seller 1</button>
+          <button type="button" class="demo-btn" onclick="fillDemo('seller2@styleco.com', 'SellerPass@123')">Seller 2</button>
+          <button type="button" class="demo-btn" onclick="fillDemo('buyer1@gmail.com', 'BuyerPass@123')">Buyer 1</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const redirect = params.get('redirect');
+    if (redirect) {
+      const regLink = document.getElementById('link-to-register');
+      if (regLink) regLink.href = `register.html?redirect=${encodeURIComponent(redirect)}`;
+    }
+
+    function fillDemo(email, pass) {
+      document.getElementById('login-email').value = email;
+      document.getElementById('login-password').value = pass;
+      Toast.info(`Filled credentials for ${email}`);
+    }
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const pass = document.getElementById('login-password').value;
+
+      const btn = document.getElementById('btn-login-submit');
+      btn.disabled = true;
+      btn.textContent = 'Signing in...';
+
+      try {
+        await Auth.login(email, pass);
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'Sign In';
+        Toast.error(err.message || 'Login failed');
+      }
+    });
+  </script>
+</body>
+</html>

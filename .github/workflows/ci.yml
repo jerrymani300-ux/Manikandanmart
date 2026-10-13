@@ -1,0 +1,66 @@
+name: ManiMart CI
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-24.04
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Install System Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends \
+          build-essential \
+          cmake \
+          ninja-build \
+          pkg-config \
+          libjsoncpp-dev \
+          uuid-dev \
+          zlib1g-dev \
+          libssl-dev \
+          libsqlite3-dev \
+          libpq-dev \
+          libsodium-dev \
+          libspdlog-dev \
+          nlohmann-json3-dev \
+          libgtest-dev \
+          libgmock-dev \
+          libcurl4-openssl-dev \
+          valgrind
+
+    - name: Build and Install Drogon Framework
+      run: |
+        git clone --depth 1 --branch v1.9.3 https://github.com/drogonframework/drogon.git
+        cd drogon
+        git submodule update --init
+        mkdir build && cd build
+        cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF ..
+        cmake --build . -j$(nproc)
+        sudo cmake --install .
+
+    - name: Configure CMake
+      run: |
+        cmake -B build -G Ninja \
+          -DCMAKE_BUILD_TYPE=Debug \
+          -DBUILD_TESTING=ON \
+          -DENABLE_ASAN=ON \
+          -DENABLE_UBSAN=ON
+
+    - name: Build Application & Tests
+      run: |
+        cmake --build build --parallel $(nproc)
+
+    - name: Run Automated Test Suite
+      run: |
+        cd build
+        ctest --output-on-failure

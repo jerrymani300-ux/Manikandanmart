@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details - ManiMart</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="header">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">M</div>
+        <span>ManiMart</span>
+      </a>
+
+      <form class="nav-search" onsubmit="event.preventDefault(); window.location.href='products.html?search=' + encodeURIComponent(this.querySelector('input').value);">
+        <span class="nav-search-icon">🔍</span>
+        <input type="text" placeholder="Search products...">
+      </form>
+
+      <ul class="nav-links">
+        <li><a href="products.html" class="nav-link">Explore</a></li>
+        <li>
+          <a href="cart.html" class="nav-link" style="position: relative;">
+            🛒 Cart
+            <span id="cart-badge" class="cart-badge" style="display: none;">0</span>
+          </a>
+        </li>
+        <li id="nav-auth-controls" style="display: flex; align-items: center; gap: 0.75rem;"></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div style="margin-bottom: 1.5rem;">
+      <a href="products.html" style="color: var(--text-muted); font-size: 0.9rem;">&larr; Back to Catalog</a>
+    </div>
+
+    <div class="product-detail-layout">
+      <div class="detail-img-container">
+        <img id="product-img" src="" alt="Product Image" class="detail-img">
+      </div>
+
+      <div class="detail-info">
+        <span id="product-category" class="badge badge-buyer" style="align-self: flex-start; margin-bottom: 0.75rem;">Category</span>
+        <h1 id="product-title" class="detail-title">Loading...</h1>
+        <div id="product-seller" style="color: var(--text-muted); font-size: 0.9rem;">Sold by ...</div>
+
+        <div id="product-price" class="detail-price">$0.00</div>
+
+        <div style="margin-bottom: 1.5rem;">
+          <span id="product-stock" class="stock-status stock-in">Checking stock...</span>
+        </div>
+
+        <p id="product-desc" class="detail-desc"></p>
+
+        <div class="detail-actions">
+          <div class="qty-control">
+            <button onclick="let q = document.getElementById('product-qty'); if(q.value > 1) q.value--;" class="qty-btn">-</button>
+            <input type="number" id="product-qty" class="qty-input" value="1" min="1" readonly>
+            <button onclick="let q = document.getElementById('product-qty'); q.value++;" class="qty-btn">+</button>
+          </div>
+
+          <button id="btn-add-cart" class="nav-btn btn-primary" style="padding: 0.75rem 2rem; font-size: 1rem;">
+            🛒 Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Verified Customer Reviews Section -->
+    <section class="card" style="margin-bottom: 3rem;">
+      <h2 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 1.5rem;">Verified Customer Reviews</h2>
+
+      <div id="reviews-list" style="margin-bottom: 2rem;">
+        <!-- Reviews list loaded via products.js -->
+      </div>
+
+      <!-- Submit Review (For Verified Buyers) -->
+      <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.5rem;">
+        <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem;">Write a Verified Review</h3>
+        <form id="review-form">
+          <div class="form-group" style="display: flex; gap: 1rem; align-items: center;">
+            <label class="form-label" style="margin: 0;">Rating (1 to 5 Stars):</label>
+            <select id="review-rating" class="form-control" style="width: 140px;" required>
+              <option value="5">★★★★★ (5)</option>
+              <option value="4">★★★★☆ (4)</option>
+              <option value="3">★★★☆☆ (3)</option>
+              <option value="2">★★☆☆☆ (2)</option>
+              <option value="1">★☆☆☆☆ (1)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Review Comment:</label>
+            <textarea id="review-comment" class="form-control" rows="3" placeholder="Share your experience with this product..." required minlength="3"></textarea>
+          </div>
+
+          <button type="submit" class="nav-btn btn-primary">Submit Review</button>
+          <span style="font-size: 0.8rem; color: var(--text-muted); margin-left: 1rem;">* Only customers who completed a delivered order for this product can submit a review.</span>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-bottom">&copy; 2026 ManiMart Marketplace.</div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Products.loadProductDetails();
+    });
+  </script>
+</body>
+</html>

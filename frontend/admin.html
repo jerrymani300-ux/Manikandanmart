@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - ManiMart</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="header">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon" style="background: linear-gradient(135deg, #7e22ce, #9333ea);">A</div>
+        <span>ManiMart <span style="font-size: 0.85rem; font-weight: 500; color: #7e22ce; margin-left: 0.5rem;">Admin Center</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Marketplace</a></li>
+        <li id="nav-auth-controls"></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="section-header">
+      <div>
+        <h1 class="section-title">Platform Administration</h1>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">System overview, user role audit, product catalog moderation, and global transaction logging.</p>
+      </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-label">Total Users</span>
+        <span id="admin-total-users" class="stat-value">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Total Listings</span>
+        <span id="admin-total-products" class="stat-value">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Total Orders</span>
+        <span id="admin-total-orders" class="stat-value">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Platform Gross Sales</span>
+        <span id="admin-total-sales" class="stat-value" style="color: var(--success);">$0.00</span>
+      </div>
+    </div>
+
+    <!-- Product Moderation Section -->
+    <div class="card" style="margin-bottom: 2.5rem;">
+      <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;">Listing Moderation (Delete Inappropriate Items)</h2>
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Product</th>
+              <th>Seller</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Admin Action</th>
+            </tr>
+          </thead>
+          <tbody id="admin-products-table">
+            <!-- Populated via admin.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- User Accounts Section -->
+    <div class="card" style="margin-bottom: 2.5rem;">
+      <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;">Registered User Accounts</h2>
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>User ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Joined Date</th>
+            </tr>
+          </thead>
+          <tbody id="admin-users-table">
+            <!-- Populated via admin.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Platform Orders Section -->
+    <div class="card">
+      <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;">Global Orders Stream</h2>
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Buyer</th>
+              <th>Status</th>
+              <th>Total Amount</th>
+              <th>Items</th>
+              <th>Order Date</th>
+            </tr>
+          </thead>
+          <tbody id="admin-orders-table">
+            <!-- Populated via admin.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-bottom">&copy; 2026 ManiMart Administration Center.</div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Admin.init();
+    });
+  </script>
+</body>
+</html>

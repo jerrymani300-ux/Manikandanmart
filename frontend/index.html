@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ManiMart - Multi-Seller E-Commerce Marketplace</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="header">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">M</div>
+        <span>ManiMart</span>
+      </a>
+
+      <form class="nav-search" onsubmit="event.preventDefault(); window.location.href='products.html?search=' + encodeURIComponent(this.querySelector('input').value);">
+        <span class="nav-search-icon">🔍</span>
+        <input type="text" placeholder="Search across thousands of marketplace products...">
+      </form>
+
+      <ul class="nav-links">
+        <li><a href="products.html" class="nav-link">Explore</a></li>
+        <li>
+          <a href="cart.html" class="nav-link" style="position: relative;">
+            🛒 Cart
+            <span id="cart-badge" class="cart-badge" style="display: none;">0</span>
+          </a>
+        </li>
+        <li id="nav-auth-controls" style="display: flex; align-items: center; gap: 0.75rem;">
+          <!-- Dynamically populated by auth.js -->
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Hero Banner -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">Discover Quality Products from <span>Trusted Sellers</span></h1>
+        <p class="hero-subtitle">ManiMart connects verified independent merchants directly with shoppers. Fast delivery, secure transactions, and verified reviews.</p>
+        <div class="hero-actions">
+          <a href="products.html" class="nav-btn btn-primary" style="padding: 0.75rem 1.5rem; font-size: 1rem;">Shop Marketplace</a>
+          <a href="register.html" class="nav-btn btn-outline" style="background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.2);">Become a Seller</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Category Filter Bar -->
+    <section>
+      <div class="categories-bar">
+        <button class="category-chip active" data-category="ALL" onclick="Products.filterByCategory('')">All Categories</button>
+        <button class="category-chip" data-category="Electronics" onclick="Products.filterByCategory('Electronics')">📱 Electronics</button>
+        <button class="category-chip" data-category="Fashion" onclick="Products.filterByCategory('Fashion')">👕 Fashion</button>
+        <button class="category-chip" data-category="Books" onclick="Products.filterByCategory('Books')">📚 Books</button>
+        <button class="category-chip" data-category="Home" onclick="Products.filterByCategory('Home')">🏡 Home & Living</button>
+        <button class="category-chip" data-category="Fitness" onclick="Products.filterByCategory('Fitness')">🏋️ Fitness</button>
+        <button class="category-chip" data-category="Accessories" onclick="Products.filterByCategory('Accessories')">🎒 Accessories</button>
+      </div>
+    </section>
+
+    <!-- Featured Products Section -->
+    <section>
+      <div class="section-header">
+        <h2 class="section-title">Trending Products</h2>
+        <a href="products.html" style="font-weight: 600; font-size: 0.95rem;">View All &rarr;</a>
+      </div>
+
+      <div id="products-grid" class="product-grid">
+        <!-- Dynamically populated by products.js -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div>
+        <div class="brand" style="color: white; margin-bottom: 0.75rem;">
+          <div class="brand-icon">M</div>
+          <span>ManiMart</span>
+        </div>
+        <p style="font-size: 0.9rem; line-height: 1.6;">A modern multi-seller marketplace built with modern C++20 and Drogon Framework.</p>
+      </div>
+      <div>
+        <h4 style="color: white; margin-bottom: 0.75rem;">Shop</h4>
+        <ul style="list-style: none; font-size: 0.85rem; line-height: 2;">
+          <li><a href="products.html?category=Electronics" style="color: inherit;">Electronics</a></li>
+          <li><a href="products.html?category=Fashion" style="color: inherit;">Fashion</a></li>
+          <li><a href="products.html?category=Books" style="color: inherit;">Books</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="color: white; margin-bottom: 0.75rem;">Account</h4>
+        <ul style="list-style: none; font-size: 0.85rem; line-height: 2;">
+          <li><a href="login.html" style="color: inherit;">Sign In</a></li>
+          <li><a href="register.html" style="color: inherit;">Join as Buyer/Seller</a></li>
+          <li><a href="orders.html" style="color: inherit;">Track Orders</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="color: white; margin-bottom: 0.75rem;">Platform</h4>
+        <ul style="list-style: none; font-size: 0.85rem; line-height: 2;">
+          <li><a href="/api/v1/health" style="color: inherit;">System Health</a></li>
+          <li><a href="admin.html" style="color: inherit;">Admin Portal</a></li>
+          <li><a href="seller.html" style="color: inherit;">Seller Dashboard</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 ManiMart Marketplace. All rights reserved. Capstone Project.
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Products.loadProducts('products-grid');
+    });
+  </script>
+</body>
+</html>

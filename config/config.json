@@ -1,0 +1,60 @@
+{
+  "listeners": [
+    {
+      "address": "0.0.0.0",
+      "port": 8080,
+      "https": false
+    }
+  ],
+  "threads_num": 4,
+  "session": {
+    "enable": true,
+    "timeout": 3600,
+    "cookie_key": "MANIMART_SESSION",
+    "max_age": 86400,
+    "same_site": "Lax",
+    "path": "/",
+    "secure": false
+  },
+  "document_root": "./frontend",
+  "home_page": "index.html",
+  "static_file_headers": [
+    {
+      "name": "Cache-Control",
+      "value": "no-cache, no-store, must-revalidate"
+    }
+  ],
+  "upload_path": "./uploads",
+  "file_types": [
+    "html",
+    "js",
+    "css",
+    "png",
+    "jpg",
+    "jpeg",
+    "ico",
+    "svg",
+    "webp",
+    "json"
+  ],
+  "custom_config": {
+    "db": {
+      "type": "sqlite",
+      "sqlite_path": "manimart.db",
+      "host": "127.0.0.1",
+      "port": 5432,
+      "dbname": "manimart_db",
+      "user": "manimart_user",
+      "password": "manimart_password"
+    },
+    "ai": {
+      "chatbot": {
+        "provider": "mock",
+        "gemini_api_key": "",
+        "gemini_model": "gemini-1.5-flash",
+        "timeout_ms": 5000,
+        "rate_limit_per_minute": 10
+      }
+    }
+  }
+}

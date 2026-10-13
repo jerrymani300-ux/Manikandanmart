@@ -1,0 +1,29 @@
+# Build outputs
+build/
+build_test/
+*.exe
+*.a
+*.o
+*.obj
+
+# SQLite temporary WAL files
+*.db-shm
+*.db-wal
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.suo
+*.user
+
+# Environment secrets
+.env
+.env.local
+
+# Unrelated subdirectories
+smart_student_helpdesk/
+
+# OS files
+Thumbs.db
+[Dd]esktop.ini
+.DS_Store

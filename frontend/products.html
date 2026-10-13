@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Products - ManiMart</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="header">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">M</div>
+        <span>ManiMart</span>
+      </a>
+
+      <div class="nav-search">
+        <span class="nav-search-icon">🔍</span>
+        <input type="text" id="catalog-search" placeholder="Search catalog by title or keyword...">
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="products.html" class="nav-link" style="color: var(--primary); font-weight: 600;">Explore</a></li>
+        <li>
+          <a href="cart.html" class="nav-link" style="position: relative;">
+            🛒 Cart
+            <span id="cart-badge" class="cart-badge" style="display: none;">0</span>
+          </a>
+        </li>
+        <li id="nav-auth-controls" style="display: flex; align-items: center; gap: 0.75rem;"></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="section-header">
+      <div>
+        <h1 class="section-title">Marketplace Catalog</h1>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">Browse verified products from all active marketplace sellers.</p>
+      </div>
+    </div>
+
+    <!-- Category Filter Bar -->
+    <div class="categories-bar">
+      <button class="category-chip active" data-category="ALL" onclick="Products.filterByCategory('')">All Categories</button>
+      <button class="category-chip" data-category="Electronics" onclick="Products.filterByCategory('Electronics')">📱 Electronics</button>
+      <button class="category-chip" data-category="Fashion" onclick="Products.filterByCategory('Fashion')">👕 Fashion</button>
+      <button class="category-chip" data-category="Books" onclick="Products.filterByCategory('Books')">📚 Books</button>
+      <button class="category-chip" data-category="Home" onclick="Products.filterByCategory('Home')">🏡 Home & Living</button>
+      <button class="category-chip" data-category="Fitness" onclick="Products.filterByCategory('Fitness')">🏋️ Fitness</button>
+      <button class="category-chip" data-category="Accessories" onclick="Products.filterByCategory('Accessories')">🎒 Accessories</button>
+    </div>
+
+    <div id="catalog-grid" class="product-grid">
+      <!-- Populated via products.js -->
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      &copy; 2026 ManiMart Marketplace. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const initialSearch = params.get('search') || '';
+      const initialCategory = params.get('category') || '';
+
+      const searchInput = document.getElementById('catalog-search');
+      if (searchInput) {
+        searchInput.value = initialSearch;
+        searchInput.addEventListener('input', (e) => {
+          Products.searchQuery = e.target.value;
+          Products.loadProducts('catalog-grid', Products.currentCategory, Products.searchQuery);
+        });
+      }
+
+      if (initialCategory) {
+        Products.filterByCategory(initialCategory);
+      } else {
+        Products.searchQuery = initialSearch;
+        Products.loadProducts('catalog-grid', '', initialSearch);
+      }
+    });
+  </script>
+</body>
+</html>

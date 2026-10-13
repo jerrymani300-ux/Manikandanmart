@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: manimart
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: SERVER_HOST
+        value: 0.0.0.0
+      - key: DB_TYPE
+        value: sqlite
+      - key: SQLITE_DB_PATH
+        value: manimart.db
+      - key: AI_PROVIDER
+        value: mock
